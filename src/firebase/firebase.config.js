@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration using Vite environment variables
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_apiKey,
-  authDomain: import.meta.env.VITE_authDomain,
-  projectId: import.meta.env.VITE_projectId, 
-  storageBucket: import.meta.env.VITE_storageBucket,
-  messagingSenderId: import.meta.env.VITE_messagingSenderId,
-  appId: import.meta.env.VITE_appId,
+  apiKey: "AIzaSyCtlViJgUai4NiehFE9efrT5WRwwVXhQk8",
+  authDomain: "food-loop-90e05.firebaseapp.com",
+  projectId: "food-loop-90e05",
+  storageBucket: "food-loop-90e05.firebasestorage.app",
+  messagingSenderId: "312131085797",
+  appId: "1:312131085797:web:862c494baa736989e47b0c"
 };
 
 // Initialize Firebase
