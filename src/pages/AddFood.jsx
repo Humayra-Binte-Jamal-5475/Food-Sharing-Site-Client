@@ -1,18 +1,20 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
 
 const AddFood = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
     foodName: "",
     foodImage: "",
     foodQuantity: "",
     pickupLocation: "",
     expiredDateTime: "",
-    additionalNotes: "",
+    additionalNotes: ""
   });
 
   const handleChange = (e) => {
@@ -20,31 +22,29 @@ const AddFood = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const newFood = {
       ...formData,
-      donorName: user?.displayName,
-      donorEmail: user?.email,
-      donorImage: user?.photoURL,
-      status: "available",
+      donorName: user?.displayName || "Unknown Donor",
+      donorEmail: user?.email || "No Email",
+      donorImage: user?.photoURL || "",
+      status: "available"
     };
 
-    fetch("http://localhost:3000/foods", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newFood),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.insertedId) {
-          Swal.fire("Food added successfully!", "", "success").then(() => {
-            e.target.reset();
-            navigate("/available-food");
-          });
-        }
-      });
+    try {
+      const res = await axios.post("http://localhost:3000/foods", newFood);
+
+      if (res.data.insertedId) {
+        Swal.fire("Food added successfully!", "", "success").then(() => {
+          navigate("/available-foods");
+        });
+      }
+    } catch (error) {
+      console.error("Error adding food:", error);
+      Swal.fire("Failed to add food", error.message, "error");
+    }
   };
 
   return (
@@ -53,7 +53,7 @@ const AddFood = () => {
       <form onSubmit={handleSubmit} className="grid gap-5">
         <input name="foodName" placeholder="Food Name" required onChange={handleChange} className="input input-bordered" />
         <input name="foodImage" placeholder="Food Image URL" required onChange={handleChange} className="input input-bordered" />
-        <input name="foodQuantity" placeholder="Quantity" required onChange={handleChange} className="input input-bordered" />
+        <input name="foodQuantity" placeholder="Quantity (e.g., 3 large pizzas)" required onChange={handleChange} className="input input-bordered" />
         <input name="pickupLocation" placeholder="Pickup Location" required onChange={handleChange} className="input input-bordered" />
         <input type="datetime-local" name="expiredDateTime" required onChange={handleChange} className="input input-bordered" />
         <textarea name="additionalNotes" placeholder="Additional Notes" onChange={handleChange} className="textarea textarea-bordered" />
@@ -64,3 +64,5 @@ const AddFood = () => {
 };
 
 export default AddFood;
+
+

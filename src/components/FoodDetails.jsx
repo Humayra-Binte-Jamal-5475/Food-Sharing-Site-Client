@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
+import RequestModal from '../components/RequestModal';
 
 const FoodDetails = () => {
     const food = useLoaderData();
-    console.log(food);
     const {
         foodName,
         foodImage,
@@ -11,13 +11,11 @@ const FoodDetails = () => {
         pickupLocation,
         expiredDateTime,
         additionalNotes,
-        donorImage,
-        donorName,
-        donorEmail,
         status
     } = food;
 
     const isExpired = new Date(expiredDateTime) < new Date();
+    const [showModal, setShowModal] = useState(false);
 
     return (
         <div className="max-w-4xl mx-auto p-6">
@@ -40,12 +38,17 @@ const FoodDetails = () => {
                 {isExpired ? (
                     <p className="text-red-500 font-semibold">This food item has expired.</p>
                 ) : (
-                    <button className="btn btn-success">Request Pickup</button>
+                    <button className="btn btn-success" onClick={() => setShowModal(true)}>Request</button>
                 )}
             </div>
-            
+
+            {/* Modal Render */}
+            {showModal && (
+                <RequestModal food={food} onClose={() => setShowModal(false)} />
+            )}
         </div>
     );
 };
 
 export default FoodDetails;
+
