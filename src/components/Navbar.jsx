@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
-import logo from "../assets/logo.jpg"; // replace with your food logo
+import logo from "../assets/logo.jpg"; 
 import { FaCircleUser } from "react-icons/fa6";
 import Swal from 'sweetalert2';
 

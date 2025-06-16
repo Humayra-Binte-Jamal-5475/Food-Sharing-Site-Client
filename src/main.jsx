@@ -10,10 +10,10 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-// import Groups from './pages/Groups.jsx';
-// import CreateGroup from './pages/CreateGroup.jsx';
+import AvailableFoods from './pages/AvailableFoods.jsx';
+import AddFood from './pages/AddFood.jsx';
 // import MyGroups from './pages/MyGroups.jsx';
-// import GroupDetails from './components/GroupDetails.jsx';
+import FoodDetails from './components/FoodDetails.jsx';
 // import UpdateGroup from './pages/UpdateGroup.jsx';
 import ForgetPassword from './pages/ForgetPassword.jsx';
 import Login from './pages/Login.jsx';
@@ -33,23 +33,27 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Home></Home>
             },
-            // {
-            //     path: "groups",
-            //     loader: () => fetch('https://hobby-hub-server-iota.vercel.app/groups'),
-            //     element: <Groups></Groups>
-            // },
-            // {
-            //     path: "/groups/:id",
-            //     element: <PrivateRoute><GroupDetails /></PrivateRoute>,
-            //     loader: async ({ params }) => {
-            //         const res = await fetch(`https://hobby-hub-server-iota.vercel.app/groups/${params.id}`);
-            //         return res.json();
-            //     }
-            // },
-            // {
-            //     path: "/create-group",
-            //     element: <PrivateRoute><CreateGroup /></PrivateRoute>,
-            // },
+            {
+                path: "available-foods",
+                loader: async () => {
+                    const res = await fetch('http://localhost:3000/foods');
+                    const data = await res.json();
+                    return data.filter(food => food.status === 'available');
+                },
+                element: <AvailableFoods></AvailableFoods>
+            },
+            {
+                path: "/foods/:id",
+                element: <PrivateRoute><FoodDetails /></PrivateRoute>,
+                loader: async ({ params }) => {
+                    const res = await fetch(`http://localhost:3000/foods/${params.id}`);
+                    return res.json();
+                }
+            },
+            {
+                path: "/add-food",
+                element: <PrivateRoute><AddFood /></PrivateRoute>
+            },
             // {
             //     path: "/updateGroup/:id",
             //     element: <PrivateRoute><UpdateGroup /></PrivateRoute>,
@@ -90,7 +94,7 @@ const router = createBrowserRouter([
     },
     {
         path: '*',
-        element:<NotFound/>
+        element: <NotFound />
     }
 ]);
 

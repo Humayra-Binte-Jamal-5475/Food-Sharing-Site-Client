@@ -1,6 +1,6 @@
 // import AboutSection from "../components/AboutSection";
 import Banner from "../components/Banner";
-// import FeaturedGroups from "../components/FeaturedGroups";
+import FeaturedGroups from "../components/FeaturedFoods";
 // import HowItWorksSection from "../components/HowItWorksSection";
 
 
@@ -9,7 +9,8 @@ const Home = () => {
   return (
     <div>
       <Banner/>
-      {/* <FeaturedGroups/>
+      <FeaturedGroups/>
+      {/* 
       <AboutSection/>
       <HowItWorksSection/> */}
     </div>

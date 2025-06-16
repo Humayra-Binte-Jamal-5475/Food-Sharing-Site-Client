@@ -31,7 +31,7 @@ useEffect(() => {
 
 
   return (
-    <div className="bg-gradient-to-r from-green-50 to-white py-20 px-6 rounded-xl shadow-md flex flex-col-reverse md:flex-row items-center justify-between gap-8">
+    <div className="bg-gradient-to-r from-green-50 to-white my-5 py-20 px-6 rounded-xl shadow-md flex flex-col-reverse md:flex-row items-center justify-between gap-8">
       {/* Text Section */}
       <div className="md:w-1/2 text-center md:text-left">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
