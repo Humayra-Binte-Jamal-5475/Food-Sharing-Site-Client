@@ -22,6 +22,8 @@ import AuthLayout from './layouts/AuthLayout.jsx';
 // import Users from './components/Users.jsx';
 import PrivateRoute from './provider/PrivateRoute.jsx';
 import NotFound from './pages/NotFound.jsx';
+import MyRequests from './pages/MyRequests.jsx';
+import MyFoods from './pages/MyFoods.jsx';
 
 
 const router = createBrowserRouter([
@@ -54,23 +56,14 @@ const router = createBrowserRouter([
                 path: "/add-food",
                 element: <PrivateRoute><AddFood /></PrivateRoute>
             },
-            // {
-            //     path: "/updateGroup/:id",
-            //     element: <PrivateRoute><UpdateGroup /></PrivateRoute>,
-            //     loader: async ({ params }) => {
-            //         const res = await fetch(`https://hobby-hub-server-iota.vercel.app/groups/${params.id}`);
-            //         return res.json();
-            //     }
-            // },
-            // {
-            //     path: "/my-groups",
-            //     element: <PrivateRoute><MyGroups /></PrivateRoute>,
-            // },
-            // {
-            //     path: "/users",
-            //     loader: () => fetch('https://hobby-hub-server-iota.vercel.app/users'),
-            //     element: <Users />,
-            // },
+            {
+                path: "/my-foods",
+                element: <PrivateRoute><MyFoods/></PrivateRoute>,
+            },
+            {
+                path: "/my-requests",
+                element: <PrivateRoute><MyRequests /></PrivateRoute>,
+            },
 
         ]
     },
