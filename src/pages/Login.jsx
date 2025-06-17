@@ -10,55 +10,50 @@ const Login = () => {
   const location = useLocation()
   const [error, setError] = useState();
   const { signIn } = useContext(AuthContext);
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const password = form.password.value;
-    const email = form.email.value;
-    console.log({ email, password })
-    signIn(email, password)
-      .then((result) => {
-        const LoginInfo = {
-          email,
-          lastSignInTime: result.user?.metadata?.lastSignInTime,
-        };
+const handleLogin = (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const password = form.password.value;
+  const email = form.email.value;
 
-        return fetch ('https://hobby-hub-server-iota.vercel.app/users', {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(LoginInfo),
-        }).then(res => res.json())
-          .then(data => {
-            console.log('after update patch', data);
-            navigate(location.state || '/');
-            Swal.fire({
-              text: "Login successful!",
-              icon: 'success',
-              confirmButtonText: 'close'
-            });
-            form.reset();
-          });
-      })
-      .catch(error => {
-        setError(error.code);
-        console.error("Login error:", error);
+  signIn(email, password)
+    .then(async (result) => {
+      const loggedInUser = result.user;
+      // Get Firebase ID token (JWT)
+      const idToken = await loggedInUser.getIdToken();
+
+      // Store the token in localStorage
+      localStorage.setItem('access-token', idToken);
+
+      // Now you can remove your patch call if you want
+      navigate(location.state || '/');
+      Swal.fire({
+        text: "Login successful!",
+        icon: 'success',
+        confirmButtonText: 'close'
       });
-  }
-  const { signInWithGoogle } = useContext(AuthContext)
+      form.reset();
+    })
+    .catch(error => {
+      setError(error.code);
+      console.error("Login error:", error);
+    });
+};
 
+const handleGoogleLogin = () => {
+  signInWithGoogle()
+    .then(async (result) => {
+      const loggedInUser = result.user;
+      // Get Firebase ID token (JWT)
+      const idToken = await loggedInUser.getIdToken();
 
-  const handleGoogleLogin = () => {
-    signInWithGoogle()
-      .then((result) => {
-        console.log(result)
-        navigate(location.state || '/')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
+      localStorage.setItem('access-token', idToken);
+      navigate(location.state || '/');
+    })
+    .catch(err => {
+      console.error('Google login error:', err);
+    });
+};
 
 
   return (

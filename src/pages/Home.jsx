@@ -1,7 +1,7 @@
-// import AboutSection from "../components/AboutSection";
+import AboutSection from "../components/AboutSection";
 import Banner from "../components/Banner";
 import FeaturedGroups from "../components/FeaturedFoods";
-// import HowItWorksSection from "../components/HowItWorksSection";
+import HowItWorksSection from "../components/HowItWorksSection";
 
 
 const Home = () => {
@@ -10,9 +10,8 @@ const Home = () => {
     <div>
       <Banner/>
       <FeaturedGroups/>
-      {/* 
       <AboutSection/>
-      <HowItWorksSection/> */}
+      <HowItWorksSection/>
     </div>
   );
 };

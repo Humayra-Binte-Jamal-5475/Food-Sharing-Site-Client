@@ -1,17 +1,33 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
+import { getAuth } from 'firebase/auth'; // Add this
 
 const MyRequests = () => {
   const { user } = useContext(AuthContext);
   const [myRequests, setMyRequests] = useState([]);
 
   useEffect(() => {
-    if (user?.email) {
-      axios.get(`http://localhost:3000/requests/${user.email}`)
-        .then(res => setMyRequests(res.data))
-        .catch(err => console.error(err));
-    }
+    const fetchRequests = async () => {
+      if (user?.email) {
+        try {
+          const auth = getAuth(); // Get Firebase auth instance
+          const token = await auth.currentUser.getIdToken(); // 🔑 Get Firebase JWT
+
+          const res = await axios.get(`http://localhost:3000/requests/${user.email}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          setMyRequests(res.data);
+        } catch (err) {
+          console.error("Error fetching requests:", err);
+        }
+      }
+    };
+
+    fetchRequests();
   }, [user]);
 
   return (
@@ -40,3 +56,4 @@ const MyRequests = () => {
 };
 
 export default MyRequests;
+
