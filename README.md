@@ -1,12 +1,24 @@
-# React + Vite
+# 🥗 FoodLoop - Food Donation Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FoodLoop is a web application that connects food donors and recipients. Users can add food donations, browse available items, and request items with real-time status updates.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User authentication via Firebase (Email/Password or Google)
+- JWT-secured backend routes using Firebase Admin SDK
+- Add, update, and delete food items
+- Browse available foods with filtering and sorting
+- Request donated food with optional notes
+- "My Requests" management page for users
+- Expiry-based sorting and layout toggle (2/3 column view)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🧱 Tech Stack
+
+- **Frontend**: React + Axios + TailwindCSS + SweetAlert2
+- **Backend**: Node.js + Express
+- **Database**: MongoDB (with Atlas)
+- **Authentication**: Firebase Auth (with JWT verification via Firebase Admin SDK)
+
+---
