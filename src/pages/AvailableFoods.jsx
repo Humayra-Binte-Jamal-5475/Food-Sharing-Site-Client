@@ -3,34 +3,33 @@ import FoodCard from '../components/FoodCard';
 import axios from 'axios';
 
 const AvailableFoods = () => {
-  const [sortedFoods, setSortedFoods] = useState([]);
+  const [allFoods, setAllFoods] = useState([]);
   const [sortOrder, setSortOrder] = useState('');
   const [searchText, setSearchText] = useState('');
+  const [isThreeCol, setIsThreeCol] = useState(true);
 
   useEffect(() => {
     axios.get('http://localhost:3000/foods')
       .then(res => {
         const available = res.data.filter(food => food.status === 'available');
-        setSortedFoods(available);
+        setAllFoods(available);
       });
   }, []);
 
   const handleSortChange = (e) => {
-    const order = e.target.value;
-    setSortOrder(order);
-
-    const sorted = [...sortedFoods].sort((a, b) => {
-      const dateA = new Date(a.expiredDateTime);
-      const dateB = new Date(b.expiredDateTime);
-      return order === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-
-    setSortedFoods(sorted);
+    setSortOrder(e.target.value);
   };
 
-  const filteredFoods = sortedFoods.filter(food =>
-    food.foodName.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const filteredFoods = allFoods
+    .filter(food =>
+      food.foodName.toLowerCase().includes(searchText.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (!sortOrder) return 0;
+      const dateA = new Date(a.expiredDateTime);
+      const dateB = new Date(b.expiredDateTime);
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
@@ -38,14 +37,14 @@ const AvailableFoods = () => {
         Available Foods for Donation
       </h1>
 
-      {/* Search & Sort Controls */}
-      <div className="flex justify-between mb-6 flex-col md:flex-row gap-4">
+      {/* Search, Sort & Layout Controls */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
         <input
           type="text"
           placeholder="Search by food name..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          className="input input-bordered w-full max-w-4xl"
+          className="input input-bordered w-full"
         />
 
         <select
@@ -57,10 +56,14 @@ const AvailableFoods = () => {
           <option value="asc">Earliest Expiry</option>
           <option value="desc">Latest Expiry</option>
         </select>
+
+        <button onClick={() => setIsThreeCol(!isThreeCol)} className="btn btn-outline">
+          {isThreeCol ? '2-Column Layout' : '3-Column Layout'}
+        </button>
       </div>
 
-      {/* Food Cards */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {/* Food Cards Grid */}
+      <div className={`grid gap-8 ${isThreeCol ? 'lg:grid-cols-3 md:grid-cols-2' : 'md:grid-cols-2 grid-cols-1'}`}>
         {filteredFoods.map(food => (
           <FoodCard key={food._id} food={food} />
         ))}

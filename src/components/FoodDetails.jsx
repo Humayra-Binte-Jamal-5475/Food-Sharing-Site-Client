@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Navigate, useLoaderData, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../provider/AuthProvider';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ const FoodDetails = () => {
   const food = useLoaderData();
   const { user } = useContext(AuthContext);
   const [notes, setNotes] = useState('');
-
+  const navigate = useNavigate();
   const {
     _id,
     foodName,
@@ -42,9 +42,10 @@ const FoodDetails = () => {
 
     try {
       await axios.post('http://localhost:3000/requests', requestData);
-      await axios.patch(`http://localhost:3000/foods/${_id}`, { status: 'requested' });
+      await axios.patch (`http://localhost:3000/foods/${_id}`, { status: 'requested' });
       Swal.fire('Food Requested!', '', 'success');
       document.getElementById('request_modal').checked = false;
+      navigate('/my-requests');
     } catch (err) {
       console.error(err);
       Swal.fire('Something went wrong', err.message, 'error');
