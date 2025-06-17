@@ -51,12 +51,12 @@ const AddFood = () => {
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-3xl font-bold mb-6 text-green-600 text-center">Add Food</h2>
       <form onSubmit={handleSubmit} className="grid gap-5">
-        <input name="foodName" placeholder="Food Name" required onChange={handleChange} className="input input-bordered" />
-        <input name="foodImage" placeholder="Food Image URL" required onChange={handleChange} className="input input-bordered" />
-        <input name="foodQuantity" placeholder="Quantity (e.g., 3 large pizzas)" required onChange={handleChange} className="input input-bordered" />
-        <input name="pickupLocation" placeholder="Pickup Location" required onChange={handleChange} className="input input-bordered" />
-        <input type="datetime-local" name="expiredDateTime" required onChange={handleChange} className="input input-bordered" />
-        <textarea name="additionalNotes" placeholder="Additional Notes" onChange={handleChange} className="textarea textarea-bordered" />
+        <input name="foodName" placeholder="Food Name" required onChange={handleChange} className="input input-bordered w-4xl" />
+        <input name="foodImage" placeholder="Food Image URL" required onChange={handleChange} className="input input-bordered w-4xl" />
+        <input name="foodQuantity" placeholder="Quantity (e.g., 3 large pizzas)" required onChange={handleChange} className="input input-bordered w-4xl" />
+        <input name="pickupLocation" placeholder="Pickup Location" required onChange={handleChange} className="input input-bordered w-4xl" />
+        <input type="datetime-local" name="expiredDateTime" required onChange={handleChange} className="input input-bordered w-4xl" />
+        <textarea name="additionalNotes" placeholder="Additional Notes" onChange={handleChange} className="textarea textarea-bordered w-4xl" />
         <button type="submit" className="btn btn-success">Add Food</button>
       </form>
     </div>
