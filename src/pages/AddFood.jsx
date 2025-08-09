@@ -34,7 +34,7 @@ const AddFood = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:3000/foods", newFood);
+      const res = await axios.post("https://food-loop-server-nu.vercel.app/foods", newFood);
 
       if (res.data.insertedId) {
         Swal.fire("Food added successfully!", "", "success").then(() => {

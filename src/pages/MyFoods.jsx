@@ -16,7 +16,7 @@ const MyFoods = () => {
     try {
       const token = await auth.currentUser.getIdToken();
 
-      const res = await axios.get(`http://localhost:3000/requests?userEmail=${user.email}`, {
+      const res = await axios.get(`https://food-loop-server-nu.vercel.app/requests?email=${user.email}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -42,7 +42,7 @@ const MyFoods = () => {
       try {
         const token = await auth.currentUser.getIdToken();
         await axios.patch(
-          `http://localhost:3000/requests/${id}`,
+          `https://food-loop-server-nu.vercel.app/requests/${id}`,
           { additionalNotes: newNotes.trim() },
           {
             headers: {
@@ -71,7 +71,7 @@ const MyFoods = () => {
     if (result.isConfirmed) {
       try {
         const token = await auth.currentUser.getIdToken();
-        await axios.delete(`http://localhost:3000/requests/${id}`, {
+        await axios.delete(`https://food-loop-server-nu.vercel.app/requests/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

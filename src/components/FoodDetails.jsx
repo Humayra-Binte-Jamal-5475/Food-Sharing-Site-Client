@@ -26,33 +26,46 @@ const FoodDetails = () => {
   const requestDate = new Date().toISOString();
   const [isLoading, setIsLoading] = useState(false);
   const handleRequest = async () => {
-    setIsLoading(true);
+  setIsLoading(true);
+
+  try {
+    if (!user) throw new Error("User not logged in");
+
+    // Get Firebase ID token from the current user
+    const idToken = await user.getIdToken();
+
     const requestData = {
       foodId: _id,
       foodName,
       foodImage,
       donorEmail,
       donorName,
-      userEmail: user?.email,
+      userEmail: user.email,
       requestDate,
       pickupLocation,
       expiredDateTime,
       additionalNotes: notes,
     };
 
-    try {
-      await axios.post('http://localhost:3000/requests', requestData);
-      await axios.patch (`http://localhost:3000/foods/${_id}`, { status: 'requested' });
-      Swal.fire('Food Requested!', '', 'success');
-      document.getElementById('request_modal').checked = false;
-      navigate('/my-requests');
-    } catch (err) {
-      console.error(err);
-      Swal.fire('Something went wrong', err.message, 'error');
-    }finally {
+    // Send token in Authorization header
+    await axios.post('https://food-loop-server-nu.vercel.app/requests', requestData, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+
+    await axios.patch(`https://food-loop-server-nu.vercel.app/foods/${_id}`, { status: 'requested' });
+    Swal.fire('Food Requested!', '', 'success');
+    document.getElementById('request_modal').checked = false;
+    navigate('/my-requests');
+  } catch (err) {
+    console.error(err);
+    Swal.fire('Something went wrong', err.message, 'error');
+  } finally {
     setIsLoading(false);
   }
-  };
+};
+
 
   return (
     <div className="max-w-4xl mx-auto p-6">

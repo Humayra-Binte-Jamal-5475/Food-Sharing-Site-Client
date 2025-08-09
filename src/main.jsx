@@ -37,7 +37,7 @@ const router = createBrowserRouter(
                 {
                     path: "available-foods",
                     loader: async () => {
-                        const res = await fetch('http://localhost:3000/foods');
+                        const res = await fetch('https://food-loop-server-nu.vercel.app/foods');
                         const data = await res.json();
                         return data.filter(food => food.status === 'available');
                     },
@@ -47,7 +47,7 @@ const router = createBrowserRouter(
                     path: "/foods/:id",
                     element: <PrivateRoute><FoodDetails /></PrivateRoute>,
                     loader: async ({ params }) => {
-                        const res = await fetch(`http://localhost:3000/foods/${params.id}`);
+                        const res = await fetch(`https://food-loop-server-nu.vercel.app/foods/${params.id}`);
                         return res.json();
                     }
                 },

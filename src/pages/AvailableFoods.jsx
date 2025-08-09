@@ -9,7 +9,7 @@ const AvailableFoods = () => {
     const [isThreeCol, setIsThreeCol] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:3000/foods', {
+        axios.get('https://food-loop-server-nu.vercel.app/foods', {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('access-token')}`
             }

@@ -122,7 +122,7 @@ const handleRegister = (e) => {
                                             placeholder="Email"
                                             required
                                         />
-                                        <div className="relative">
+                                        <div className="relative text-left">
                                             <label className="label">Password</label>
                                             <input
                                                 type="password"

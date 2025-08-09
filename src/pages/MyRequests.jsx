@@ -14,7 +14,7 @@ const MyRequests = () => {
           const auth = getAuth(); // Get Firebase auth instance
           const token = await auth.currentUser.getIdToken(); // 🔑 Get Firebase JWT
 
-          const res = await axios.get(`http://localhost:3000/requests/${user.email}`, {
+          const res = await axios.get(`https://food-loop-server-nu.vercel.app/requests/${user.email}`, {
             headers: {
               Authorization: `Bearer ${token}`
             }

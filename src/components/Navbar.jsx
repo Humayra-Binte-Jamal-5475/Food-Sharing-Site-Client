@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import logo from "../assets/logo.jpg"; 
@@ -7,15 +7,21 @@ import Swal from 'sweetalert2';
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logOut()
       .then(() => {
+        // Remove JWT token from localStorage
+        localStorage.removeItem("foodloop-token");
+
         Swal.fire({
           text: "You have been logged out.",
           icon: 'success',
           confirmButtonText: 'Close'
         });
+
+        navigate("/"); // Redirect to home
       })
       .catch((err) => {
         console.error("Logout error:", err);
@@ -35,11 +41,16 @@ const NavBar = () => {
       {/* Navigation Links */}
       <div className="flex-1 flex justify-center">
         <ul className="menu menu-horizontal flex space-x-5 items-center text-gray-700 font-medium">
-          <li><NavLink to="/" className="hover:text-green-600">Home</NavLink></li>
-          <li><NavLink to="/available-foods" className="hover:text-green-600">Available Foods</NavLink></li>
-          <li><NavLink to="/add-food" className="hover:text-green-600">Add Food</NavLink></li>
-          <li><NavLink to="/my-foods" className="hover:text-green-600">Manage My Foods</NavLink></li>
-          <li><NavLink to="/my-requests" className="hover:text-green-600">My Requests</NavLink></li>
+          <li><NavLink to="/" className={({ isActive }) => isActive ? "text-green-600 font-semibold" : "hover:text-green-600"}>Home</NavLink></li>
+          <li><NavLink to="/available-foods" className={({ isActive }) => isActive ? "text-green-600 font-semibold" : "hover:text-green-600"}>Available Foods</NavLink></li>
+
+          {user && (
+            <>
+              <li><NavLink to="/add-food" className={({ isActive }) => isActive ? "text-green-600 font-semibold" : "hover:text-green-600"}>Add Food</NavLink></li>
+              <li><NavLink to="/my-foods" className={({ isActive }) => isActive ? "text-green-600 font-semibold" : "hover:text-green-600"}>Manage My Foods</NavLink></li>
+              <li><NavLink to="/my-requests" className={({ isActive }) => isActive ? "text-green-600 font-semibold" : "hover:text-green-600"}>My Requests</NavLink></li>
+            </>
+          )}
         </ul>
       </div>
 
@@ -47,7 +58,7 @@ const NavBar = () => {
       <div className="flex items-center gap-4">
         {user ? (
           <>
-            <div className="tooltip tooltip-bottom" data-tip={user.displayName}>
+            <div className="tooltip tooltip-bottom" data-tip={user.displayName || "User"}>
               {user.photoURL ? (
                 <img className="h-10 w-10 rounded-full" src={user.photoURL} alt="User" />
               ) : (

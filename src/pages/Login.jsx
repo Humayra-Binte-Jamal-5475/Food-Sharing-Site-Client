@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState();
-  const { signIn } = useContext(AuthContext);
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
 const handleLogin = (e) => {
   e.preventDefault();
   const form = e.target;
@@ -81,7 +81,7 @@ const handleGoogleLogin = () => {
                       placeholder="Email"
                       required
                     />
-                    <div className="relative">
+                    <div className="relative text-left">
                       <label className="label">Password</label>
                       <input
                         type="password"
