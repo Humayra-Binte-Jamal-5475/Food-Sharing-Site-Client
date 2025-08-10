@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaGithub, FaLinkedin } from 'react-icons/fa';
-
 const Footer = () => {
   return (
     <footer className="bg-green-950 text-white py-10 px-6 mt-16">
@@ -16,8 +15,16 @@ const Footer = () => {
         <div>
           <h4 className="font-semibold mb-2">About</h4>
           <ul className="space-y-1 text-gray-300">
-            <li><a href="#" className="hover:text-white">Our Mission</a></li>
-            <li><a href="#" className="hover:text-white">Contact Us</a></li>
+            <li>
+              <a href="/#mission" className="hover:text-white">
+                Our Mission
+              </a>
+            </li>
+            <li>
+              <a href="/#contact" className="hover:text-white">
+                Contact Us
+              </a>
+            </li>
           </ul>
         </div>
 
