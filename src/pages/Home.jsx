@@ -3,7 +3,6 @@ import Banner from "../components/Banner";
 import FeaturedFoods from "../components/FeaturedFoods";
 import HowItWorksSection from "../components/HowItWorksSection";
 import Mission from "../components/Mission";
-import Contact from "../components/Contact";
 
 const Home = () => {
   
@@ -14,7 +13,6 @@ const Home = () => {
       <AboutSection/>
       <Mission/>
       <HowItWorksSection/>
-      <Contact/>
     </div>
   );
 };

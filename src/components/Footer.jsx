@@ -21,8 +21,8 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="/#contact" className="hover:text-white">
-                Contact Us
+              <a href="/#AboutSection" className="hover:text-white">
+                Why FoodLoop
               </a>
             </li>
           </ul>
