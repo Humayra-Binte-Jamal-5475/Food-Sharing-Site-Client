@@ -2,28 +2,33 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { AuthContext } from '../provider/AuthProvider';
-import { getAuth } from 'firebase/auth';  // Added import
+import { getAuth } from 'firebase/auth';
+import Loading from './Loading';
 
-const auth = getAuth(); // Initialize Firebase Auth
+const auth = getAuth();
 
 const MyFoods = () => {
   const { user } = useContext(AuthContext);
   const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(true); // 🔹 Added loading state
 
   const fetchFoods = async () => {
     if (!user) return;
 
+    setLoading(true); // 🔹 Start loading before fetch
     try {
       const token = await auth.currentUser.getIdToken();
-
-      const res = await axios.get(`https://food-loop-server-nu.vercel.app/requests?email=${user.email}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        `https://food-loop-server-nu.vercel.app/foods?email=${user.email}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setFoods(res.data);
     } catch (error) {
       console.error('Error fetching foods:', error);
+    } finally {
+      setLoading(false); // 🔹 Stop loading after fetch
     }
   };
 
@@ -45,9 +50,7 @@ const MyFoods = () => {
           `https://food-loop-server-nu.vercel.app/requests/${id}`,
           { additionalNotes: newNotes.trim() },
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         fetchFoods();
@@ -71,11 +74,12 @@ const MyFoods = () => {
     if (result.isConfirmed) {
       try {
         const token = await auth.currentUser.getIdToken();
-        await axios.delete(`https://food-loop-server-nu.vercel.app/requests/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.delete(
+          `https://food-loop-server-nu.vercel.app/requests/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         fetchFoods();
         Swal.fire('Cancelled!', 'The request has been deleted.', 'success');
       } catch (error) {
@@ -89,9 +93,16 @@ const MyFoods = () => {
     if (user?.email) fetchFoods();
   }, [user]);
 
+  // 🔹 Show loading spinner until data is fetched
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-4 text-green-700">Manage My Foods</h2>
+      <h2 className="text-3xl font-bold mb-4 text-green-700">
+        Manage My Foods
+      </h2>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
@@ -104,10 +115,14 @@ const MyFoods = () => {
             </tr>
           </thead>
           <tbody>
-            {foods.map(food => (
+            {foods.map((food) => (
               <tr key={food._id}>
                 <td>
-                  <img src={food.foodImage} alt="" className="w-16 h-16 object-cover rounded" />
+                  <img
+                    src={food.foodImage}
+                    alt=""
+                    className="w-16 h-16 object-cover rounded"
+                  />
                 </td>
                 <td>{food.foodName}</td>
                 <td>{food.foodQuantity}</td>
@@ -115,11 +130,16 @@ const MyFoods = () => {
                 <td>
                   <button
                     className="btn btn-sm btn-warning mr-2"
-                    onClick={() => handleUpdate(food._id, food.additionalNotes)}
+                    onClick={() =>
+                      handleUpdate(food._id, food.additionalNotes)
+                    }
                   >
                     Update
                   </button>
-                  <button className="btn btn-sm btn-error" onClick={() => handleDelete(food._id)}>
+                  <button
+                    className="btn btn-sm btn-error"
+                    onClick={() => handleDelete(food._id)}
+                  >
                     Delete
                   </button>
                 </td>
@@ -127,11 +147,14 @@ const MyFoods = () => {
             ))}
           </tbody>
         </table>
-        {foods.length === 0 && <p className="text-center mt-4">No foods added yet.</p>}
+        {foods.length === 0 && (
+          <p className="text-center mt-4">No foods added yet.</p>
+        )}
       </div>
     </div>
   );
 };
 
 export default MyFoods;
+
 
